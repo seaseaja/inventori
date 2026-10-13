@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - Sistem Inventori</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="auth-page">
+  <aside class="auth-side">
+    <div class="auth-brand">📦 Sistem Inventori</div>
+    <div>
+      <h2>Kelola stok barang jadi lebih rapi.</h2>
+      <p>Pantau stok, nilai barang, dan export data dalam satu dashboard.</p>
+    </div>
+    <small>© 2024 PT. XYZ</small>
+  </aside>
+
+  <main class="auth-main">
+    <div class="auth-box">
+      <a href="/" class="auth-home">← Kembali ke Home</a>
+      <h1>Selamat datang</h1>
+      <p class="auth-sub">Login untuk mengelola data inventori.</p>
+
+      {% if msg %}<div class="alert-success">✅ {{ msg }}</div>{% endif %}
+      {% if error %}<div class="alert-error">❌ {{ error }}</div>{% endif %}
+
+      <form action="/login" method="post">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" value="{{ username }}"
+               placeholder="Username kamu" required autofocus>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Password kamu" required>
+
+        <label class="show-pass">
+          <input type="checkbox" onclick="document.getElementById('password').type = this.checked ? 'text' : 'password'">
+          Tampilkan password
+        </label>
+
+        <button type="submit" class="button auth-btn">Masuk</button>
+      </form>
+
+      <p class="auth-switch">Belum punya akun? <a href="/register">Daftar</a></p>
+    </div>
+  </main>
+</div>
+</body>
+</html>

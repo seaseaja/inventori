@@ -1,0 +1,41 @@
+{% set uname = request.session.get('username') %}
+<nav class="navbar">
+  <a href="/" class="brand">
+    <span class="brand-logo">📦</span> Inventori
+  </a>
+
+  <div class="nav-links">
+    <a href="/">Home</a>
+    {% if uname %}
+      <a href="/barang">Data Barang</a>
+      <a href="/insert">Tambah Barang</a>
+    {% endif %}
+  </div>
+
+  <div class="nav-right">
+    {% if uname %}
+      <details class="user-menu">
+        <summary>
+          <span class="avatar">{{ uname[0]|upper }}<i class="dot"></i></span>
+          {{ uname }} ▾
+        </summary>
+        <div class="menu">
+          <div class="menu-head">Masuk sebagai <b>{{ uname }}</b></div>
+          <form action="/logout" method="post">
+            <button type="submit" class="nav-logout">🚪 Logout</button>
+          </form>
+        </div>
+      </details>
+    {% else %}
+      <a href="/login" class="nav-login">Login</a>
+      <a href="/register" class="nav-cta">Daftar</a>
+    {% endif %}
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('click', function (e) {
+    var d = document.querySelector('.user-menu');
+    if (d && !d.contains(e.target)) d.removeAttribute('open');
+  });
+</script>

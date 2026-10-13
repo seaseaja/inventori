@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ data.judul }}</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+{% if not request.session.get('user_id') %}
+<div class="topbar" id="topbar">
+  <span>⚡ <b>BARU</b> &nbsp;Sistem login & registrasi akun sudah tersedia!</span>
+  <a href="/register" class="topbar-btn">Daftar Sekarang</a>
+  <button class="topbar-close" onclick="document.getElementById('topbar').remove()" aria-label="Tutup">✕</button>
+</div>
+{% endif %}
+
+{% include "_navbar.html" %}
+
+<section class="hero">
+  <div class="ring r1"></div>
+  <div class="ring r2"></div>
+  <div class="ring r3"></div>
+
+  <div class="bubble b1">📊</div>
+  <div class="bubble b2">⚠️</div>
+  <div class="bubble b3">🔍</div>
+  <div class="bubble b4">📦</div>
+  <div class="bubble b5">📥</div>
+  <div class="bubble b6">💰</div>
+
+  <div class="hero-inner">
+    <div class="pill-row">
+      <span class="pill-badge">🏢 {{ data.kampus }}</span>
+      <span class="pill-badge">📊 Dashboard Real-time</span>
+    </div>
+
+    <h1 class="hero-title">Kelola <span>Inventori</span> Bisnis Kamu Jadi Lebih Cerdas</h1>
+
+    <p class="hero-tag">Data <b>Rapi</b>, Stok <b>Terpantau</b></p>
+    <p class="hero-desc">{{ data.deskripsi }}</p>
+
+    <div class="hero-cta">
+      {% if request.session.get('user_id') %}
+        <a href="/barang" class="btn-hero">Buka Data Barang <span>→</span></a>
+        <a href="/insert" class="btn-hero light">➕ Tambah Barang</a>
+      {% else %}
+        <a href="/register" class="btn-hero">Mulai Sekarang <span>→</span></a>
+        <a href="/login" class="btn-hero light">🔑 Login</a>
+      {% endif %}
+    </div>
+
+    <p class="hero-trust">FITUR UNGGULAN</p>
+  </div>
+
+  <div class="feature-strip">
+    <div class="feature-chip">📊 Dashboard Statistik</div>
+    <div class="feature-chip">⚠️ Badge Stok Otomatis</div>
+    <div class="feature-chip">🔍 Filter &amp; Pencarian</div>
+    <div class="feature-chip">📥 Export CSV</div>
+  </div>
+</section>
+
+<div class="footer">
+  <p>© 2024 Sistem Informasi Inventori - PT. XYZ</p>
+</div>
+
+</body>
+</html>

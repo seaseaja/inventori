@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daftar - Sistem Inventori</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="auth-page">
+  <aside class="auth-side">
+    <div class="auth-brand">📦 Sistem Inventori</div>
+    <div>
+      <h2>Mulai kelola inventori dalam hitungan menit.</h2>
+      <p>Buat akun, tambah barang, dan pantau stok yang menipis secara otomatis.</p>
+    </div>
+    <small>© 2024 PT. XYZ</small>
+  </aside>
+
+  <main class="auth-main">
+    <div class="auth-box">
+      <a href="/" class="auth-home">← Kembali ke Home</a>
+      <h1>Buat akun</h1>
+      <p class="auth-sub">Isi data di bawah untuk mendaftar.</p>
+
+      {% if error %}<div class="alert-error">❌ {{ error }}</div>{% endif %}
+
+      <form action="/register" method="post">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" value="{{ username }}"
+               minlength="3" maxlength="30" placeholder="Huruf, angka, underscore" required autofocus>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="{{ email }}"
+               maxlength="100" placeholder="nama@email.com" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" minlength="8"
+               placeholder="Minimal 8 karakter" required>
+
+        <label for="konfirmasi">Konfirmasi Password</label>
+        <input type="password" id="konfirmasi" name="konfirmasi" minlength="8"
+               placeholder="Ulangi password" required>
+
+        <label class="show-pass">
+          <input type="checkbox" onclick="var t = this.checked ? 'text' : 'password'; document.getElementById('password').type = t; document.getElementById('konfirmasi').type = t;">
+          Tampilkan password
+        </label>
+
+        <button type="submit" class="button auth-btn">Daftar</button>
+      </form>
+
+      <p class="auth-switch">Sudah punya akun? <a href="/login">Login</a></p>
+    </div>
+  </main>
+</div>
+</body>
+</html>

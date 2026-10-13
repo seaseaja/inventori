@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tambah Barang - Sistem Inventori</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    
+{% include "_navbar.html" %}
+
+<div class="container">
+<div class="card">
+<h1>Tambah Barang</h1>
+
+{% if error %}
+<div class="alert-error">❌ {{ error }}</div>
+{% endif %}
+
+<form action="/insert" method="post" style="max-width: 600px;">
+<label>🏷️ Kode Barang</label>
+<input type="text" name="kode" maxlength="10" placeholder="Contoh: BRG001" required>
+
+<label>📦 Nama Barang</label>
+<input type="text" name="nama_barang" maxlength="100" placeholder="Contoh: Laptop ASUS ROG" required>
+
+<label>💵 Harga Beli (Rp)</label>
+<input type="number" name="harga_beli" min="0" step="0.01" placeholder="Contoh: 15000000" required>
+
+<label>💰 Harga Jual (Rp)</label>
+<input type="number" name="harga_jual" min="0" step="0.01" placeholder="Contoh: 18000000" required>
+
+<label>📊 Stok</label>
+<input type="number" name="stok" min="0" placeholder="Contoh: 25" required>
+
+<div style="margin-top: 25px; display: flex; gap: 10px;">
+<button type="submit" class="button">💾 Simpan</button>
+<a href="/barang" class="button button-secondary">↩️ Batal</a>
+</div>
+</form>
+</div>
+</div>
+
+<div class="footer">
+<p>© 2024 Sistem Informasi Inventori - PT. XYZ</p>
+</div>
+</body>
+</html>

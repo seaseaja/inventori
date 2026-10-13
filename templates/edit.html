@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Barang - Sistem Inventori</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+{% include "_navbar.html" %}
+
+<div class="container">
+<div class="card">
+<h1>Edit Barang</h1>
+
+<form action="/edit/{{ barang.kode }}" method="post" style="max-width: 600px;">
+<label>🏷️ Kode Barang</label>
+<input type="text" name="kode" value="{{ barang.kode }}" readonly style="background: #f7fafc; cursor: not-allowed;">
+
+<label>📦 Nama Barang</label>
+<input type="text" name="nama_barang" value="{{ barang.nama_barang }}" maxlength="100" required>
+
+<label>💵 Harga Beli (Rp)</label>
+<input type="number" name="harga_beli" value="{{ barang.harga_beli }}" min="0" step="0.01" required>
+
+<label>💰 Harga Jual (Rp)</label>
+<input type="number" name="harga_jual" value="{{ barang.harga_jual }}" min="0" step="0.01" required>
+
+<label>📊 Stok</label>
+<input type="number" name="stok" value="{{ barang.stok }}" min="0" required>
+
+<div style="margin-top: 25px; display: flex; gap: 10px;">
+<button type="submit" class="button">💾 Simpan Perubahan</button>
+<a href="/barang" class="button button-secondary">↩️ Batal</a>
+</div>
+</form>
+</div>
+</div>
+
+<div class="footer">
+<p>© 2024 Sistem Informasi Inventori - PT. XYZ</p>
+</div>
+</body>
+</html>

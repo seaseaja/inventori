@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Barang - Sistem Inventori</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+{% include "_navbar.html" %}
+
+<div class="container">
+<div class="card">
+<h1>Data Barang</h1>
+
+{% if msg %}
+<div class="alert-success">✅ {{ msg }}</div>
+{% endif %}
+
+<!-- Dashboard Stats -->
+<div class="dashboard">
+<div class="stat-card primary">
+<div class="stat-label">
+<span>📊</span> Total Jenis Barang
+</div>
+<div class="stat-value">{{ total_jenis }}</div>
+<div class="stat-subtitle">Item terdaftar</div>
+</div>
+
+<div class="stat-card success">
+<div class="stat-label">
+<span>💰</span> Total Nilai Stok
+</div>
+<div class="stat-value">Rp {{ "{:,.0f}".format(total_nilai) }}</div>
+<div class="stat-subtitle">Harga beli × stok</div>
+</div>
+
+<div class="stat-card warning">
+<div class="stat-label">
+<span>⚠️</span> Stok Menipis
+</div>
+<div class="stat-value">{{ stok_menipis }}</div>
+<div class="stat-subtitle">Stok kurang dari 10</div>
+</div>
+</div>
+
+<!-- Action Bar -->
+<div class="action-bar">
+<div class="action-group">
+<a href="/insert" class="button">➕ Tambah Barang</a>
+<a href="/barang/export" class="button button-success" download>📥 Export CSV</a>
+</div>
+</div>
+
+<!-- Search Form -->
+<form action="/barang" method="get" class="search-form">
+<input type="text" name="q" placeholder="🔍 Cari nama barang..." value="{{ q }}">
+<input type="hidden" name="filter_stok" value="{{ filter_stok }}">
+<button class="button" type="submit">Cari</button>
+{% if q %}
+<a href="/barang?filter_stok={{ filter_stok }}" class="button button-secondary">Reset</a>
+{% endif %}
+</form>
+
+<!-- Filter Status Stok -->
+<div class="filter-group">
+<a href="/barang?q={{ q }}&filter_stok=semua" class="filter-btn {% if filter_stok == 'semua' %}active{% endif %}">
+📋 Semua ({{ total_jenis }})
+</a>
+<a href="/barang?q={{ q }}&filter_stok=menipis" class="filter-btn {% if filter_stok == 'menipis' %}active{% endif %}">
+⚠️ Stok Menipis ({{ stok_menipis }})
+</a>
+<a href="/barang?q={{ q }}&filter_stok=aman" class="filter-btn {% if filter_stok == 'aman' %}active{% endif %}">
+✅ Stok Aman ({{ total_jenis - stok_menipis }})
+</a>
+</div>
+
+<!-- Table or Empty State -->
+{% if barang %}
+<div style="overflow-x: auto;">
+<table>
+<thead>
+<tr>
+<th><a href="/barang?q={{ q }}&filter_stok={{ filter_stok }}&sort=kode&order={{ 'desc' if sort=='kode' and order=='asc' else 'asc' }}">Kode</a></th>
+<th><a href="/barang?q={{ q }}&filter_stok={{ filter_stok }}&sort=nama_barang&order={{ 'desc' if sort=='nama_barang' and order=='asc' else 'asc' }}">Nama Barang</a></th>
+<th><a href="/barang?q={{ q }}&filter_stok={{ filter_stok }}&sort=harga_beli&order={{ 'desc' if sort=='harga_beli' and order=='asc' else 'asc' }}">Harga Beli</a></th>
+<th><a href="/barang?q={{ q }}&filter_stok={{ filter_stok }}&sort=harga_jual&order={{ 'desc' if sort=='harga_jual' and order=='asc' else 'asc' }}">Harga Jual</a></th>
+<th><a href="/barang?q={{ q }}&filter_stok={{ filter_stok }}&sort=stok&order={{ 'desc' if sort=='stok' and order=='asc' else 'asc' }}">Stok</a></th>
+<th>Status</th>
+<th>Total Nilai</th>
+<th>Aksi</th>
+</tr>
+</thead>
+
+<tbody>
+{% for item in barang %}
+<tr>
+<td><strong>{{ item.kode }}</strong></td>
+<td>{{ item.nama_barang }}</td>
+<td>Rp {{ "{:,.0f}".format(item.harga_beli) }}</td>
+<td>Rp {{ "{:,.0f}".format(item.harga_jual) }}</td>
+<td><strong>{{ item.stok }}</strong></td>
+<td>
+{% if item.stok < 10 %}
+<span class="badge badge-danger">⚠️ Menipis</span>
+{% else %}
+<span class="badge badge-success">✅ Aman</span>
+{% endif %}
+</td>
+<td><strong>Rp {{ "{:,.0f}".format(item.harga_beli * item.stok) }}</strong></td>
+<td>
+<a href="/edit/{{ item.kode }}" class="button" style="font-size: 13px; padding: 8px 14px;">✏️ Edit</a>
+
+<form action="/delete/{{ item.kode }}" method="post" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus barang ini?');">
+<button type="submit" class="button button-delete" style="font-size: 13px; padding: 8px 14px;">🗑️ Delete</button>
+</form>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% else %}
+<!-- Empty State -->
+<div class="empty-state">
+<div class="empty-state-icon">📭</div>
+<h3>Tidak Ada Data</h3>
+<p>
+{% if q %}
+Tidak ada hasil untuk pencarian "<strong>{{ q }}</strong>"
+{% elif filter_stok == 'menipis' %}
+Tidak ada barang dengan stok menipis. Semua stok dalam kondisi aman! 🎉
+{% elif filter_stok == 'aman' %}
+Tidak ada barang dengan stok aman.
+{% else %}
+Belum ada data barang. Silakan tambahkan barang baru.
+{% endif %}
+</p>
+{% if q %}
+<a href="/barang?filter_stok={{ filter_stok }}" class="button">Lihat Semua Data</a>
+{% else %}
+<a href="/insert" class="button">➕ Tambah Barang Baru</a>
+{% endif %}
+</div>
+{% endif %}
+
+<p style="margin-top: 30px;">
+<a href="/" class="button button-secondary">⬅️ Kembali ke Home</a>
+</p>
+</div>
+</div>
+
+<div class="footer">
+<p>© 2024 Sistem Informasi Inventori - PT. XYZ</p>
+</div>
+
+</body>
+</html>
